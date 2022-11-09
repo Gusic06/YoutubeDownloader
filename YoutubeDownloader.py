@@ -20,19 +20,12 @@ def terminalClear():
 
 def YoutubeDownloader(): 
 
-    originalKeyPath = ".\\encryption.key"
-    targetKeyPath = ".\\key\\encryption.key"
-
-    keyPath = ".\\key"
-
-    if os.path.exists(keyPath):
+    if os.path.exists(".\\key"):
         pass
     else:
         os.mkdir("key")
 
-    megaCredentialCheck = ".\\megaCredentialSave.py"
-
-    if os.path.exists(megaCredentialCheck):
+    if os.path.exists(".\\megaCredentialSave.py"):
 
         with open("megaCredentialSave.py", "r")as file:
             megaLogin = file.read()
@@ -51,7 +44,7 @@ def YoutubeDownloader():
         megaCredentialCheck1 = ".\\Created Logins\\email.json"
         megaCredentialCheck2 = ".\\Created Logins\\password.json"
 
-        if os.path.exists(megaCredentialCheck1) and os.path.exists(megaCredentialCheck2):
+        if os.path.exists(".\\Created Logins\\email.json") and os.path.exists(".\\Created Logins\\password.json"):
 
             print("It seems you have a login already saved on your system")
             savedLoginQuery = input("Do you want to login on your saved account? (Y/N) -> ").title()
@@ -67,9 +60,6 @@ def YoutubeDownloader():
                             key = key.read()
 
                         key = Fernet(key)
-                
-                        emailFilePath = ".\\Created Logins\\email.json"
-                        passwordFilePath = ".\\Created Logins\\password.json"
 
                         with open(".\\Created Logins\\email.json", "rb")as file:
                             emailFile = file.read()
@@ -117,8 +107,8 @@ def YoutubeDownloader():
                         megaConfirmation = True
 
                     else:
-                        log.DEBUG("megaCredentialSave.py was corrupted or changed.")
-                        os.remove(megaCredentialCheck1, megaCredentialCheck2)
+                        print("email.json or password.json or both are either corrupted or have been altered/deleted.")
+                        os.remove(".\\Created Logins\\email.json", ".\\Created Logins\\password.json")
                         terminalClear()
 
                 if savedLoginQuery == "No" or savedLoginQuery == "N":
@@ -140,7 +130,6 @@ def YoutubeDownloader():
                     terminalClear()
 
             except:
-
                 raise InputError("That wasn't a valid input.")
 
         else:
@@ -183,17 +172,6 @@ def YoutubeDownloader():
 
                 with open("encryption.key", "wb")as Key:
                     Key.write(key)
-
-                """
-                startPathEmail = ".\\email.json"
-                startPathPassword = ".\\password.json"
-
-                targetPathEmail = ".\\Created Logins\\email.json"
-                targetPathPassword = ".\\Created Logins\\password.json"
-
-                shutil.move(startPathEmail, targetPathEmail)
-                shutil.move(startPathPassword, targetPathPassword)
-                """
 
                 with open("encryption.key", "rb")as file:
                     key = file.read()
@@ -286,7 +264,7 @@ def YoutubeDownloader():
 
     userSettingHigher = True
 
-    if os.path.exists(downloadPathVideos) and os.path.exists(downloadPathMusic):
+    if os.path.exists(".\\Downloaded Videos") and os.path.exists(".\\Downloaded Music"):
         x=1
     else:
         os.mkdir("Downloaded Videos")
@@ -528,10 +506,7 @@ def YoutubeDownloader():
                     time.sleep(0.5)
                     terminalClear()
 
-                    megaCredentialCheck1 = ".\\Created Logins\\email.json"
-                    megaCredentialCheck2 = ".\\Created Logins\\password.json"
-
-                    if os.path.exists(megaCredentialCheck1) and os.path.exists(megaCredentialCheck2):
+                    if os.path.exists(".\\Created Logins\\email.json") and os.path.exists(".\\Created Logins\\password.json"):
 
                         print("It seems you have a login already saved on your system")
                         savedLoginQuery = input("Do you want to login on your saved account? (Y/N) -> ").title()
@@ -543,33 +518,30 @@ def YoutubeDownloader():
 
                         if megaLogin == "True":
         
-                            with open(targetKeyPath, "rb")as key:
+                            with open(".\\key\\encryption.key", "rb")as key:
                                 key = key.read()
 
                             key = Fernet(key)
-                
-                            emailFilePath = ".\\Created Logins\\email.json"
-                            passwordFilePath = ".\\Created Logins\\password.json"
 
-                            with open(emailFilePath, "rb")as file:
+                            with open(".\\Created Logins\\email.json", "rb")as file:
                                 emailFile = file.read()
                 
-                            with open(passwordFilePath, "rb")as file:
+                            with open(".\\Created Logins\\password.json", "rb")as file:
                                 passwordFile = file.read()
 
                             decryptedEmail = key.decrypt(emailFile)
                             decryptedPassword = key.decrypt(passwordFile)
 
-                            with open(emailFilePath, "wb")as file:
+                            with open(".\\Created Logins\\email.json", "wb")as file:
                                 file.write(decryptedEmail)
                 
-                            with open(passwordFilePath, "wb")as file:
+                            with open(".\\Created Logins\\password.json", "wb")as file:
                                 file.write(decryptedPassword)
 
-                            with open(emailFilePath, "r")as file:
+                            with open(".\\Created Logins\\email.json", "r")as file:
                                 email = file.read()
                 
-                            with open(passwordFilePath, "r")as file:
+                            with open(".\\Created Logins\\password.json", "r")as file:
                                 password = file.read()
 
                             print("Logging in...")
@@ -577,25 +549,25 @@ def YoutubeDownloader():
                             mega = Mega()
                             m = mega.login(email, password)
 
-                            with open(emailFilePath, "rb")as file:
+                            with open(".\\Created Logins\\email.json", "rb")as file:
                                 emailContents = file.read()
 
-                            with open(passwordFilePath, "rb")as file:
+                            with open(".\\Created Logins\\password.json", "rb")as file:
                                 passwordContents = file.read()
 
                             reEncryptedEmail = key.encrypt(emailContents)
                             reEncryptedPassword = key.encrypt(passwordContents)
 
-                            with open(emailFilePath, "wb")as file:
+                            with open(".\\Created Logins\\email.json", "wb")as file:
                                 file.write(reEncryptedEmail)
                         
-                            with open(passwordFilePath, "wb")as file:
+                            with open(".\\Created Logins\\password.json", "wb")as file:
                                 file.write(reEncryptedPassword)
 
                             megaConfirmation = True
 
                         else:
-                            os.remove(megaCredentialCheck1, megaCredentialCheck2)
+                            os.remove(".\\Created Logins\\email.json", ".\\Created Logins\\password.json")
                             terminalClear()
                             raise Exception("megaCredentialSave.py was corrupted or changed.")
                     else:
@@ -661,7 +633,7 @@ def YoutubeDownloader():
                             emailChange = input("What is the email you want to change to? -> ")
                             emailChange = emailChange.encode("utf-8")
 
-                            with open(targetKeyPath, "rb")as file:
+                            with open(".\\key\\encryption.key", "rb")as file:
                                 key = file.read()
 
                             Key = Fernet(key)
@@ -688,7 +660,7 @@ def YoutubeDownloader():
 
                         if savedPasswordChange == "Change":
 
-                            with open(targetKeyPath, "rb")as file:
+                            with open(".\\key\\encryption.key", "rb")as file:
                                 key = file.read()
 
                             Key = Fernet(key)
@@ -707,7 +679,6 @@ def YoutubeDownloader():
                             loop = False
                             terminalClear()
                             
-
                         elif savedPasswordChange == "Keep":
 
                             print("Your password has been kept the same.")
@@ -715,14 +686,12 @@ def YoutubeDownloader():
                             time.sleep(1)
                             terminalClear()
                         
-
                 if mUserChoice == 4:
                     print("Returning to menu.")
                     megaSettingsLoop = False
                     time.sleep(0.5)
                     terminalClear()
                     
-
         if userChoice == 5:
             time.sleep(0.8)
             terminalClear()
