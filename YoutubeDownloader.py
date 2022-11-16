@@ -18,7 +18,7 @@ class InputError(Exception):
 def terminalClear():
     os.system("cls")
 
-def YoutubeDownloader(): 
+def YoutubeDownloader(): #Holy shit this codebase is so ass
 
     if os.path.exists(".\\key"):
         pass
